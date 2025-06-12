@@ -1,17 +1,17 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import os   # 추가
 
-st.title("서울시 상권 vs 유동인구 분석")
-st.write("Streamlit 앱이 성공적으로 실행되었습니다!")
-
-@st.cache_data
-import os
 st.write("현재 작업 디렉토리:", os.getcwd())
 st.write("data 폴더 존재 여부:", os.path.exists("data"))
 st.write("seoul_sales_2024.csv 존재 여부:", os.path.exists("data/seoul_sales_2024.csv"))
 st.write("seoul_subway_2024.csv 존재 여부:", os.path.exists("data/seoul_subway_2024.csv"))
 
+st.title("서울시 상권 vs 유동인구 분석")
+st.write("Streamlit 앱이 성공적으로 실행되었습니다!")
+
+@st.cache_data
 def load_data():
     df_sales = pd.read_csv("data/seoul_sales_2024.csv", encoding='cp949')
     df_subway = pd.read_csv("data/seoul_subway_2024.csv", encoding='cp949')
