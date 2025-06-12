@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 st.title("서울시 상권 vs 유동인구 분석")
 st.write("Streamlit 앱이 성공적으로 실행되었습니다!")
 
-# CSV 불러오기 (상대 경로 사용)
+# ---------------- 데이터 로드 ----------------
+
 @st.cache_data
 def load_data():
     df_sales = pd.read_csv("data/seoul_sales_2024.csv", encoding='cp949')
@@ -55,12 +56,11 @@ def calculate_total_traffic(df_grouped):
 df_grouped = group_subway_timezones(df_subway)
 df_traffic = calculate_total_traffic(df_grouped)
 
-# 동대문 기준 분석
 dongdaemun_sales = df_sales[df_sales['상권_코드_명'].str.contains("동대문", na=False)]
 dongdaemun_traffic = df_traffic[df_traffic["역명"] == "동대문"]
 
-# 시간대 매출과 유동인구 평균값 계산
 dongdaemun_traffic_avg = dongdaemun_traffic.mean(numeric_only=True)
+
 dongdaemun_sales_avg = dongdaemun_sales[
     [col for col in dongdaemun_sales.columns if "시간대_" in col and "매출_금액" in col]
 ].mean()
@@ -75,6 +75,7 @@ correlation = avg_df['평균_매출'].corr(avg_df['평균_유동인구'])
 st.write(f"### 동대문역 기준 시간대별 매출 vs 유동인구 상관계수: `{correlation:.4f}`")
 
 # ---------------- 시각화 ----------------
+
 fig, ax = plt.subplots(figsize=(10, 5))
 ax.plot(avg_df['시간대'], avg_df['평균_매출'], marker='o', label='평균 매출')
 ax.plot(avg_df['시간대'], avg_df['평균_유동인구'], marker='s', label='평균 유동인구')
